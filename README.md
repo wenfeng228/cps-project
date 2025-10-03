@@ -15,3 +15,6 @@ We model policy domains (or SDG indicators) as nodes in a directed weighted grap
 - **Governance-light design:** Focus on structural spillovers and budget dynamics, omitting governance/behavioral submodules to keep the mechanism interpretable.  
 - **Network-aware allocator:** A simple, transparent priority score couples target gaps with out-degree (or strength), yielding an efficient greedy-style allocation.  
 
+---
+
+For more information about the original PPI framework, please visit the official repository: [https://github.com/oguerrer/ppi](https://github.com/oguerrer/ppi)
