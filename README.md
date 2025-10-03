@@ -1,4 +1,4 @@
-# Simulating Policy Priority Inference via Network Analysis
+# Simulating Policy Priority Inference
 
 We develop a streamlined, network-based variant of Policy Priority Inference (PPI) to study how budget allocations propagate across interdependent policy domains under structural spillovers. Our formulation isolates core computational mechanisms, diffusion on a directed weighted graph and heuristic allocation, while retaining interpretability and scalability for iterative simulation and sensitivity analysis.
 
