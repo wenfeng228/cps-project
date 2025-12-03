@@ -1,0 +1,79 @@
+\doxysection{Node Struct Reference}
+\hypertarget{struct_node}{}\label{struct_node}\index{Node@{Node}}
+
+
+represents a single entity in the simulation network.  
+
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+int32\+\_\+t \mbox{\hyperlink{struct_node_a793a25af6a5cd6d446e2453767673c71}{id}}
+\item 
+double \mbox{\hyperlink{struct_node_ac3cf5e1d42b822dcef1bb1da3ac1db3d}{initial}}
+\item 
+double \mbox{\hyperlink{struct_node_a2cd5a8b8dc01b084350a8dd12fecc369}{target}}
+\item 
+double \mbox{\hyperlink{struct_node_aaa14b96baf5fcafa613bc28feaa6671c}{indicator}}
+\item 
+double \mbox{\hyperlink{struct_node_a03ed164d6f5c7df11c3d1790a8b81ae2}{alloc}}
+\item 
+double \mbox{\hyperlink{struct_node_a10d44a3a5b86ba647ccf3413484b3e52}{gap}}
+\item 
+double \mbox{\hyperlink{struct_node_a01d9717093a59963d200253f9b44739c}{spill\+\_\+weight}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+represents a single entity in the simulation network. 
+
+\label{doc-variable-members}
+\Hypertarget{struct_node_doc-variable-members}
+\doxysubsection{Field Documentation}
+\Hypertarget{struct_node_a03ed164d6f5c7df11c3d1790a8b81ae2}\index{Node@{Node}!alloc@{alloc}}
+\index{alloc@{alloc}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{alloc}{alloc}}
+{\footnotesize\ttfamily \label{struct_node_a03ed164d6f5c7df11c3d1790a8b81ae2} 
+double Node\+::alloc}
+
+budget allocated to this node \Hypertarget{struct_node_a10d44a3a5b86ba647ccf3413484b3e52}\index{Node@{Node}!gap@{gap}}
+\index{gap@{gap}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{gap}{gap}}
+{\footnotesize\ttfamily \label{struct_node_a10d44a3a5b86ba647ccf3413484b3e52} 
+double Node\+::gap}
+
+difference between target and indicator \Hypertarget{struct_node_a793a25af6a5cd6d446e2453767673c71}\index{Node@{Node}!id@{id}}
+\index{id@{id}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{id}{id}}
+{\footnotesize\ttfamily \label{struct_node_a793a25af6a5cd6d446e2453767673c71} 
+int32\+\_\+t Node\+::id}
+
+unique node id \Hypertarget{struct_node_aaa14b96baf5fcafa613bc28feaa6671c}\index{Node@{Node}!indicator@{indicator}}
+\index{indicator@{indicator}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{indicator}{indicator}}
+{\footnotesize\ttfamily \label{struct_node_aaa14b96baf5fcafa613bc28feaa6671c} 
+double Node\+::indicator}
+
+current state indicator \Hypertarget{struct_node_ac3cf5e1d42b822dcef1bb1da3ac1db3d}\index{Node@{Node}!initial@{initial}}
+\index{initial@{initial}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{initial}{initial}}
+{\footnotesize\ttfamily \label{struct_node_ac3cf5e1d42b822dcef1bb1da3ac1db3d} 
+double Node\+::initial}
+
+initial value \Hypertarget{struct_node_a01d9717093a59963d200253f9b44739c}\index{Node@{Node}!spill\_weight@{spill\_weight}}
+\index{spill\_weight@{spill\_weight}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{spill\_weight}{spill\_weight}}
+{\footnotesize\ttfamily \label{struct_node_a01d9717093a59963d200253f9b44739c} 
+double Node\+::spill\+\_\+weight}
+
+weight based on uniform, local, or global strategy \Hypertarget{struct_node_a2cd5a8b8dc01b084350a8dd12fecc369}\index{Node@{Node}!target@{target}}
+\index{target@{target}!Node@{Node}}
+\doxysubsubsection{\texorpdfstring{target}{target}}
+{\footnotesize\ttfamily \label{struct_node_a2cd5a8b8dc01b084350a8dd12fecc369} 
+double Node\+::target}
+
+target value 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{simulator_8c}{simulator.\+c}}\end{DoxyCompactItemize}

@@ -1,0 +1,89 @@
+\@ifundefined {etoctocstyle}{\let \etoc@startlocaltoc \@gobble \let \etoc@settocdepth \@gobble \let \etoc@depthtag \@gobble \let \etoc@setlocaltop \@gobble }{}
+\contentsline {chapter}{\numberline {1}Data Structure Index}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Data Structures}{1}{section.1.1}%
+\contentsline {chapter}{\numberline {2}File Index}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}File List}{3}{section.2.1}%
+\contentsline {chapter}{\numberline {3}Data Structure Documentation}{5}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Adj\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Graph Struct Reference}{5}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Detailed Description}{5}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Field Documentation}{5}{subsection.3.1.2}%
+\contentsline {subsubsection}{\numberline {3.1.2.1}head}{5}{subsubsection.3.1.2.1}%
+\contentsline {subsubsection}{\numberline {3.1.2.2}n\_edges}{5}{subsubsection.3.1.2.2}%
+\contentsline {subsubsection}{\numberline {3.1.2.3}n\_nodes}{6}{subsubsection.3.1.2.3}%
+\contentsline {section}{\numberline {3.2}CSRGraph Struct Reference}{6}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Detailed Description}{6}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Field Documentation}{6}{subsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.2.1}col\_ind}{6}{subsubsection.3.2.2.1}%
+\contentsline {subsubsection}{\numberline {3.2.2.2}n\_edges}{6}{subsubsection.3.2.2.2}%
+\contentsline {subsubsection}{\numberline {3.2.2.3}n\_nodes}{6}{subsubsection.3.2.2.3}%
+\contentsline {subsubsection}{\numberline {3.2.2.4}row\_ptr}{7}{subsubsection.3.2.2.4}%
+\contentsline {subsubsection}{\numberline {3.2.2.5}val}{7}{subsubsection.3.2.2.5}%
+\contentsline {subsubsection}{\numberline {3.2.2.6}val\_unsigned}{7}{subsubsection.3.2.2.6}%
+\contentsline {section}{\numberline {3.3}Edge\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Node Struct Reference}{7}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Detailed Description}{7}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Field Documentation}{7}{subsection.3.3.2}%
+\contentsline {subsubsection}{\numberline {3.3.2.1}dst}{7}{subsubsection.3.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.3.2.2}next}{8}{subsubsection.3.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.3.2.3}uw}{8}{subsubsection.3.3.2.3}%
+\contentsline {subsubsection}{\numberline {3.3.2.4}w}{8}{subsubsection.3.3.2.4}%
+\contentsline {section}{\numberline {3.4}Edge\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Raw Struct Reference}{8}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Detailed Description}{8}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Field Documentation}{8}{subsection.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.4.2.1}dst}{8}{subsubsection.3.4.2.1}%
+\contentsline {subsubsection}{\numberline {3.4.2.2}src}{9}{subsubsection.3.4.2.2}%
+\contentsline {subsubsection}{\numberline {3.4.2.3}uw}{9}{subsubsection.3.4.2.3}%
+\contentsline {subsubsection}{\numberline {3.4.2.4}w}{9}{subsubsection.3.4.2.4}%
+\contentsline {section}{\numberline {3.5}Heap\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Node Struct Reference}{9}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Detailed Description}{9}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Field Documentation}{9}{subsection.3.5.2}%
+\contentsline {subsubsection}{\numberline {3.5.2.1}dist}{9}{subsubsection.3.5.2.1}%
+\contentsline {subsubsection}{\numberline {3.5.2.2}node}{9}{subsubsection.3.5.2.2}%
+\contentsline {section}{\numberline {3.6}Min\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Heap Struct Reference}{10}{section.3.6}%
+\contentsline {subsection}{\numberline {3.6.1}Detailed Description}{10}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.2}Field Documentation}{10}{subsection.3.6.2}%
+\contentsline {subsubsection}{\numberline {3.6.2.1}capacity}{10}{subsubsection.3.6.2.1}%
+\contentsline {subsubsection}{\numberline {3.6.2.2}data}{10}{subsubsection.3.6.2.2}%
+\contentsline {subsubsection}{\numberline {3.6.2.3}size}{10}{subsubsection.3.6.2.3}%
+\contentsline {section}{\numberline {3.7}Node Struct Reference}{10}{section.3.7}%
+\contentsline {subsection}{\numberline {3.7.1}Detailed Description}{11}{subsection.3.7.1}%
+\contentsline {subsection}{\numberline {3.7.2}Field Documentation}{11}{subsection.3.7.2}%
+\contentsline {subsubsection}{\numberline {3.7.2.1}alloc}{11}{subsubsection.3.7.2.1}%
+\contentsline {subsubsection}{\numberline {3.7.2.2}gap}{11}{subsubsection.3.7.2.2}%
+\contentsline {subsubsection}{\numberline {3.7.2.3}id}{11}{subsubsection.3.7.2.3}%
+\contentsline {subsubsection}{\numberline {3.7.2.4}indicator}{11}{subsubsection.3.7.2.4}%
+\contentsline {subsubsection}{\numberline {3.7.2.5}initial}{11}{subsubsection.3.7.2.5}%
+\contentsline {subsubsection}{\numberline {3.7.2.6}spill\_weight}{12}{subsubsection.3.7.2.6}%
+\contentsline {subsubsection}{\numberline {3.7.2.7}target}{12}{subsubsection.3.7.2.7}%
+\contentsline {section}{\numberline {3.8}Rank\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Pair Struct Reference}{12}{section.3.8}%
+\contentsline {subsection}{\numberline {3.8.1}Detailed Description}{12}{subsection.3.8.1}%
+\contentsline {subsection}{\numberline {3.8.2}Field Documentation}{12}{subsection.3.8.2}%
+\contentsline {subsubsection}{\numberline {3.8.2.1}index}{12}{subsubsection.3.8.2.1}%
+\contentsline {subsubsection}{\numberline {3.8.2.2}value}{12}{subsubsection.3.8.2.2}%
+\contentsline {chapter}{\numberline {4}File Documentation}{13}{chapter.4}%
+\contentsline {section}{\numberline {4.1}simulator.\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}c File Reference}{13}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Detailed Description}{15}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Macro Definition Documentation}{15}{subsection.4.1.2}%
+\contentsline {subsubsection}{\numberline {4.1.2.1}DIST\_INF}{15}{subsubsection.4.1.2.1}%
+\contentsline {subsubsection}{\numberline {4.1.2.2}MAX\_LINE\_LEN}{15}{subsubsection.4.1.2.2}%
+\contentsline {subsection}{\numberline {4.1.3}Typedef Documentation}{15}{subsection.4.1.3}%
+\contentsline {subsubsection}{\numberline {4.1.3.1}EdgeNode}{15}{subsubsection.4.1.3.1}%
+\contentsline {subsection}{\numberline {4.1.4}Function Documentation}{15}{subsection.4.1.4}%
+\contentsline {subsubsection}{\numberline {4.1.4.1}add\_edge\_adj()}{15}{subsubsection.4.1.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.4.2}compare\_rank()}{16}{subsubsection.4.1.4.2}%
+\contentsline {subsubsection}{\numberline {4.1.4.3}compute\_global\_spillover\_adj()}{16}{subsubsection.4.1.4.3}%
+\contentsline {subsubsection}{\numberline {4.1.4.4}compute\_global\_spillover\_csr()}{16}{subsubsection.4.1.4.4}%
+\contentsline {subsubsection}{\numberline {4.1.4.5}compute\_l2\_gap()}{17}{subsubsection.4.1.4.5}%
+\contentsline {subsubsection}{\numberline {4.1.4.6}compute\_local\_spillover\_adj()}{17}{subsubsection.4.1.4.6}%
+\contentsline {subsubsection}{\numberline {4.1.4.7}compute\_local\_spillover\_csr()}{17}{subsubsection.4.1.4.7}%
+\contentsline {subsubsection}{\numberline {4.1.4.8}create\_adj\_graph()}{18}{subsubsection.4.1.4.8}%
+\contentsline {subsubsection}{\numberline {4.1.4.9}free\_adj()}{18}{subsubsection.4.1.4.9}%
+\contentsline {subsubsection}{\numberline {4.1.4.10}free\_csr()}{18}{subsubsection.4.1.4.10}%
+\contentsline {subsubsection}{\numberline {4.1.4.11}heap\_create()}{18}{subsubsection.4.1.4.11}%
+\contentsline {subsubsection}{\numberline {4.1.4.12}heap\_free()}{19}{subsubsection.4.1.4.12}%
+\contentsline {subsubsection}{\numberline {4.1.4.13}heap\_pop()}{19}{subsubsection.4.1.4.13}%
+\contentsline {subsubsection}{\numberline {4.1.4.14}heap\_push()}{19}{subsubsection.4.1.4.14}%
+\contentsline {subsubsection}{\numberline {4.1.4.15}load\_graphs()}{20}{subsubsection.4.1.4.15}%
+\contentsline {subsubsection}{\numberline {4.1.4.16}load\_nodes()}{20}{subsubsection.4.1.4.16}%
+\contentsline {subsubsection}{\numberline {4.1.4.17}main()}{21}{subsubsection.4.1.4.17}%
+\contentsline {subsubsection}{\numberline {4.1.4.18}reset\_nodes()}{21}{subsubsection.4.1.4.18}%
+\contentsline {subsubsection}{\numberline {4.1.4.19}simulation\_iteration()}{22}{subsubsection.4.1.4.19}%

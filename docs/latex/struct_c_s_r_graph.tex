@@ -1,0 +1,71 @@
+\doxysection{CSRGraph Struct Reference}
+\hypertarget{struct_c_s_r_graph}{}\label{struct_c_s_r_graph}\index{CSRGraph@{CSRGraph}}
+
+
+graph representation using compressed sparse row/\+CSR.  
+
+
+\doxysubsubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+int32\+\_\+t \mbox{\hyperlink{struct_c_s_r_graph_a99a7bb7c985e0837a8572df1095b4f6f}{n\+\_\+nodes}}
+\item 
+int32\+\_\+t \mbox{\hyperlink{struct_c_s_r_graph_a96faadb19275b8d58f14339355e0a58f}{n\+\_\+edges}}
+\item 
+int32\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct_c_s_r_graph_a6a3e014dd474c92985c193c1714a5b01}{row\+\_\+ptr}}
+\item 
+int32\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct_c_s_r_graph_a73aa04b7c91a524ac59ddb9f6284906e}{col\+\_\+ind}}
+\item 
+double \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct_c_s_r_graph_ab46249a26b36f52ea26cad3c95091f85}{val}}
+\item 
+double \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct_c_s_r_graph_ab0cd07ff17737396cb93bc03f7a1bc60}{val\+\_\+unsigned}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+graph representation using compressed sparse row/\+CSR. 
+
+\label{doc-variable-members}
+\Hypertarget{struct_c_s_r_graph_doc-variable-members}
+\doxysubsection{Field Documentation}
+\Hypertarget{struct_c_s_r_graph_a73aa04b7c91a524ac59ddb9f6284906e}\index{CSRGraph@{CSRGraph}!col\_ind@{col\_ind}}
+\index{col\_ind@{col\_ind}!CSRGraph@{CSRGraph}}
+\doxysubsubsection{\texorpdfstring{col\_ind}{col\_ind}}
+{\footnotesize\ttfamily \label{struct_c_s_r_graph_a73aa04b7c91a524ac59ddb9f6284906e} 
+int32\+\_\+t\texorpdfstring{$\ast$}{*} CSRGraph\+::col\+\_\+ind}
+
+column indices (size n\+\_\+edges) \Hypertarget{struct_c_s_r_graph_a96faadb19275b8d58f14339355e0a58f}\index{CSRGraph@{CSRGraph}!n\_edges@{n\_edges}}
+\index{n\_edges@{n\_edges}!CSRGraph@{CSRGraph}}
+\doxysubsubsection{\texorpdfstring{n\_edges}{n\_edges}}
+{\footnotesize\ttfamily \label{struct_c_s_r_graph_a96faadb19275b8d58f14339355e0a58f} 
+int32\+\_\+t CSRGraph\+::n\+\_\+edges}
+
+num of edges \Hypertarget{struct_c_s_r_graph_a99a7bb7c985e0837a8572df1095b4f6f}\index{CSRGraph@{CSRGraph}!n\_nodes@{n\_nodes}}
+\index{n\_nodes@{n\_nodes}!CSRGraph@{CSRGraph}}
+\doxysubsubsection{\texorpdfstring{n\_nodes}{n\_nodes}}
+{\footnotesize\ttfamily \label{struct_c_s_r_graph_a99a7bb7c985e0837a8572df1095b4f6f} 
+int32\+\_\+t CSRGraph\+::n\+\_\+nodes}
+
+num of nodes \Hypertarget{struct_c_s_r_graph_a6a3e014dd474c92985c193c1714a5b01}\index{CSRGraph@{CSRGraph}!row\_ptr@{row\_ptr}}
+\index{row\_ptr@{row\_ptr}!CSRGraph@{CSRGraph}}
+\doxysubsubsection{\texorpdfstring{row\_ptr}{row\_ptr}}
+{\footnotesize\ttfamily \label{struct_c_s_r_graph_a6a3e014dd474c92985c193c1714a5b01} 
+int32\+\_\+t\texorpdfstring{$\ast$}{*} CSRGraph\+::row\+\_\+ptr}
+
+row pointers (size n\+\_\+nodes + 1) \Hypertarget{struct_c_s_r_graph_ab46249a26b36f52ea26cad3c95091f85}\index{CSRGraph@{CSRGraph}!val@{val}}
+\index{val@{val}!CSRGraph@{CSRGraph}}
+\doxysubsubsection{\texorpdfstring{val}{val}}
+{\footnotesize\ttfamily \label{struct_c_s_r_graph_ab46249a26b36f52ea26cad3c95091f85} 
+double\texorpdfstring{$\ast$}{*} CSRGraph\+::val}
+
+edge weights (size n\+\_\+edges) \Hypertarget{struct_c_s_r_graph_ab0cd07ff17737396cb93bc03f7a1bc60}\index{CSRGraph@{CSRGraph}!val\_unsigned@{val\_unsigned}}
+\index{val\_unsigned@{val\_unsigned}!CSRGraph@{CSRGraph}}
+\doxysubsubsection{\texorpdfstring{val\_unsigned}{val\_unsigned}}
+{\footnotesize\ttfamily \label{struct_c_s_r_graph_ab0cd07ff17737396cb93bc03f7a1bc60} 
+double\texorpdfstring{$\ast$}{*} CSRGraph\+::val\+\_\+unsigned}
+
+unweighted (size n\+\_\+edges) 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{simulator_8c}{simulator.\+c}}\end{DoxyCompactItemize}

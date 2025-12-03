@@ -1,0 +1,516 @@
+\doxysection{simulator.\+c File Reference}
+\hypertarget{simulator_8c}{}\label{simulator_8c}\index{simulator.c@{simulator.c}}
+
+
+A simulator of network using Open\+MP for parallel implementation.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$omp.\+h$>$}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_heap_node}{Heap\+Node}}
+\begin{DoxyCompactList}\small\item\em represents a single element in the priority queue. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_min_heap}{Min\+Heap}}
+\begin{DoxyCompactList}\small\item\em a binary min-\/heap structure for efficient priority queue operations for Dijkstra\textquotesingle{}s algorithm during global spillover calculation. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_edge_node}{Edge\+Node}}
+\begin{DoxyCompactList}\small\item\em a node in the adjacency list linked list. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}}
+\begin{DoxyCompactList}\small\item\em graph representation using an adjacency list. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_c_s_r_graph}{CSRGraph}}
+\begin{DoxyCompactList}\small\item\em graph representation using compressed sparse row/\+CSR. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_node}{Node}}
+\begin{DoxyCompactList}\small\item\em represents a single entity in the simulation network. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_rank_pair}{Rank\+Pair}}
+\begin{DoxyCompactList}\small\item\em helper structure for sorting nodes by spillover weight. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_edge_raw}{Edge\+Raw}}
+\begin{DoxyCompactList}\small\item\em temporary structure for reading edges before graph construction. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{simulator_8c_a09a3b394b8602092d58347b791158062}{MAX\+\_\+\+LINE\+\_\+\+LEN}}~4096
+\item 
+\#define \mbox{\hyperlink{simulator_8c_af69cf5890f7d2ec10fb217de3ed100a1}{DIST\+\_\+\+INF}}~1e300
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct Edge\+Node \mbox{\hyperlink{simulator_8c_a40f96f3460b73bf912d6fd09e98963b6}{Edge\+Node}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_min_heap}{Min\+Heap}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{simulator_8c_a000cdbdcfcabd52b511326567b7b5ea4}{heap\+\_\+create}} (int32\+\_\+t capacity)
+\begin{DoxyCompactList}\small\item\em allocates and initializes a new \doxylink{struct_min_heap}{Min\+Heap}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{simulator_8c_a813be87557045c82c0fa5d4e5d66d78c}{heap\+\_\+free}} (\mbox{\hyperlink{struct_min_heap}{Min\+Heap}} \texorpdfstring{$\ast$}{*}h)
+\begin{DoxyCompactList}\small\item\em frees the memory associated with a \doxylink{struct_min_heap}{Min\+Heap}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{simulator_8c_a7cc60c4b81f75250b6a7276afc7889b1}{heap\+\_\+push}} (\mbox{\hyperlink{struct_min_heap}{Min\+Heap}} \texorpdfstring{$\ast$}{*}h, int32\+\_\+t node, double dist)
+\begin{DoxyCompactList}\small\item\em pushes a new node into the min-\/heap. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_heap_node}{Heap\+Node}} \mbox{\hyperlink{simulator_8c_a76a1d87fe6be28e3ce053ff908b5f8ec}{heap\+\_\+pop}} (\mbox{\hyperlink{struct_min_heap}{Min\+Heap}} \texorpdfstring{$\ast$}{*}h)
+\begin{DoxyCompactList}\small\item\em pops the node with the smallest distance from the heap. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{simulator_8c_a43f4f56d16fdbc7979c7302941146fed}{create\+\_\+adj\+\_\+graph}} (int32\+\_\+t n\+\_\+nodes)
+\begin{DoxyCompactList}\small\item\em creates an empty adjacency graph. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{simulator_8c_aa116f65341877dae4681b653f822648b}{add\+\_\+edge\+\_\+adj}} (\mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}} \texorpdfstring{$\ast$}{*}g, int src, int dst, double w, double uw)
+\begin{DoxyCompactList}\small\item\em adds an edge to the adjacency graph. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{simulator_8c_aa70c9c09bfa621a5b1ee83646863926b}{free\+\_\+adj}} (\mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}} \texorpdfstring{$\ast$}{*}g)
+\begin{DoxyCompactList}\small\item\em frees all memory associated with an adjacency graph. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{simulator_8c_a174cfadc79131fa77350ebf482d55c2c}{free\+\_\+csr}} (\mbox{\hyperlink{struct_c_s_r_graph}{CSRGraph}} \texorpdfstring{$\ast$}{*}g)
+\begin{DoxyCompactList}\small\item\em frees all memory associated with a csr graph. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{simulator_8c_aa0dc431641a3b42658e71e2e4614b204}{reset\+\_\+nodes}} (\mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}nodes, int n)
+\begin{DoxyCompactList}\small\item\em resets node states for a new simulation run. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{simulator_8c_a6177cfb84db7fa680633a78804571d02}{compare\+\_\+rank}} (const void \texorpdfstring{$\ast$}{*}a, const void \texorpdfstring{$\ast$}{*}b)
+\begin{DoxyCompactList}\small\item\em comparator function for qsort to sort Rank\+Pairs descending. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{simulator_8c_a0649188502091997d2db89528a607fdb}{load\+\_\+nodes}} (const char \texorpdfstring{$\ast$}{*}path, \mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}out\+\_\+nodes, int \texorpdfstring{$\ast$}{*}out\+\_\+n)
+\begin{DoxyCompactList}\small\item\em loads node data from a csv file. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{simulator_8c_afcae6cd3d04616a1cee4d21b6138d7a6}{load\+\_\+graphs}} (const char \texorpdfstring{$\ast$}{*}path, int n\+\_\+nodes, \mbox{\hyperlink{struct_c_s_r_graph}{CSRGraph}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}csr\+\_\+f, \mbox{\hyperlink{struct_c_s_r_graph}{CSRGraph}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}csr\+\_\+b, \mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}adj\+\_\+f, \mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}adj\+\_\+b)
+\begin{DoxyCompactList}\small\item\em loads graph data and builds both csr and adjacency list representations. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{simulator_8c_a3fb6fa2aaa30ceac5d1606bf4b560c06}{compute\+\_\+local\+\_\+spillover\+\_\+csr}} (const \mbox{\hyperlink{struct_c_s_r_graph}{CSRGraph}} \texorpdfstring{$\ast$}{*}g, \mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}nodes, int n)
+\begin{DoxyCompactList}\small\item\em computes local spillover weights using csr representation. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{simulator_8c_ad2748206dc22fbedf0bca0a5d5f0189c}{compute\+\_\+global\+\_\+spillover\+\_\+csr}} (const \mbox{\hyperlink{struct_c_s_r_graph}{CSRGraph}} \texorpdfstring{$\ast$}{*}g, \mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}nodes, int n)
+\begin{DoxyCompactList}\small\item\em computes global spillover weights using CSR representation. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{simulator_8c_a914b5fd373e24081263b80cfcbf2d95c}{compute\+\_\+local\+\_\+spillover\+\_\+adj}} (const \mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}} \texorpdfstring{$\ast$}{*}g, \mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}nodes, int n)
+\begin{DoxyCompactList}\small\item\em computes local spillover weights using adj list representation. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{simulator_8c_a06d00483eeb176645b89c6e4983e1560}{compute\+\_\+global\+\_\+spillover\+\_\+adj}} (const \mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}} \texorpdfstring{$\ast$}{*}g, \mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}nodes, int n)
+\begin{DoxyCompactList}\small\item\em computes global spillover weights using adj list representation. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{simulator_8c_a0c9ff6527315bd69975dd27c84ba0e21}{compute\+\_\+l2\+\_\+gap}} (\mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}nodes, int n)
+\begin{DoxyCompactList}\small\item\em computes the l2/\+Euclidean dist of the gap. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{simulator_8c_a16238687200758ff6fe24abd2410d59d}{simulation\+\_\+iteration}} (int rep\+\_\+type, const char \texorpdfstring{$\ast$}{*}rep\+\_\+name, const char \texorpdfstring{$\ast$}{*}fac\+\_\+name, const void \texorpdfstring{$\ast$}{*}bwd\+\_\+graph, \mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}nodes, int n, double budget, double lambda, double gamma, int max\+\_\+iter, double epsilon, int output\+\_\+mode, const char \texorpdfstring{$\ast$}{*}output\+\_\+dir, int data\+\_\+val, int num\+\_\+candidates, int num\+\_\+snapshots, int \texorpdfstring{$\ast$}{*}out\+\_\+steps, double \texorpdfstring{$\ast$}{*}out\+\_\+l2)
+\begin{DoxyCompactList}\small\item\em executes the simulation loop for budget allocation. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{simulator_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}argv)
+\begin{DoxyCompactList}\small\item\em entry point of the simulation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A simulator of network using Open\+MP for parallel implementation. 
+
+The main funtion contains spillover computation and iteration computation. It supports two graph representations\+: adjacency list and compressed sparse row. It uses three allocation strategies\+: uniform, local spillover, and global spillover.
+
+\begin{DoxyNote}{Note}
+
+\begin{DoxyItemize}
+\item Compile\+: mpicc -\/fopenmp -\/fopenmp \doxylink{simulator_8c}{simulator.\+c} -\/o simulator -\/lm
+\item Usage\+: srun -\/n \#rank -\/c \#thread ./simulator \mbox{[}gamma\mbox{]} \mbox{[}lambda\mbox{]} \mbox{[}budget\mbox{]} \mbox{[}output\+\_\+mode\mbox{]} \mbox{[}nodes\+\_\+file\mbox{]} \mbox{[}edges\+\_\+file\mbox{]} ... 
+\end{DoxyItemize}
+\end{DoxyNote}
+
+
+\label{doc-define-members}
+\Hypertarget{simulator_8c_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{simulator_8c_af69cf5890f7d2ec10fb217de3ed100a1}\index{simulator.c@{simulator.c}!DIST\_INF@{DIST\_INF}}
+\index{DIST\_INF@{DIST\_INF}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{DIST\_INF}{DIST\_INF}}
+{\footnotesize\ttfamily \label{simulator_8c_af69cf5890f7d2ec10fb217de3ed100a1} 
+\#define DIST\+\_\+\+INF~1e300}
+
+representation of infinity for distance calculation \Hypertarget{simulator_8c_a09a3b394b8602092d58347b791158062}\index{simulator.c@{simulator.c}!MAX\_LINE\_LEN@{MAX\_LINE\_LEN}}
+\index{MAX\_LINE\_LEN@{MAX\_LINE\_LEN}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{MAX\_LINE\_LEN}{MAX\_LINE\_LEN}}
+{\footnotesize\ttfamily \label{simulator_8c_a09a3b394b8602092d58347b791158062} 
+\#define MAX\+\_\+\+LINE\+\_\+\+LEN~4096}
+
+maximum length for line buffer reading 
+
+\label{doc-typedef-members}
+\Hypertarget{simulator_8c_doc-typedef-members}
+\doxysubsection{Typedef Documentation}
+\Hypertarget{simulator_8c_a40f96f3460b73bf912d6fd09e98963b6}\index{simulator.c@{simulator.c}!EdgeNode@{EdgeNode}}
+\index{EdgeNode@{EdgeNode}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{EdgeNode}{EdgeNode}}
+{\footnotesize\ttfamily \label{simulator_8c_a40f96f3460b73bf912d6fd09e98963b6} 
+typedef struct Edge\+Node Edge\+Node}
+
+
+
+\label{doc-func-members}
+\Hypertarget{simulator_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{simulator_8c_aa116f65341877dae4681b653f822648b}\index{simulator.c@{simulator.c}!add\_edge\_adj@{add\_edge\_adj}}
+\index{add\_edge\_adj@{add\_edge\_adj}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{add\_edge\_adj()}{add\_edge\_adj()}}
+{\footnotesize\ttfamily \label{simulator_8c_aa116f65341877dae4681b653f822648b} 
+void add\+\_\+edge\+\_\+adj (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}} \texorpdfstring{$\ast$}{*}}]{g}{, }\item[{int}]{src}{, }\item[{int}]{dst}{, }\item[{double}]{w}{, }\item[{double}]{uw}{}\end{DoxyParamCaption})}
+
+
+
+adds an edge to the adjacency graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & pointer to the graph. \\
+\hline
+{\em src} & source node id. \\
+\hline
+{\em dst} & destination node id. \\
+\hline
+{\em w} & edge weight. \\
+\hline
+{\em uw} & unweighted value. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{simulator_8c_a6177cfb84db7fa680633a78804571d02}\index{simulator.c@{simulator.c}!compare\_rank@{compare\_rank}}
+\index{compare\_rank@{compare\_rank}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{compare\_rank()}{compare\_rank()}}
+{\footnotesize\ttfamily \label{simulator_8c_a6177cfb84db7fa680633a78804571d02} 
+int compare\+\_\+rank (\begin{DoxyParamCaption}\item[{const void \texorpdfstring{$\ast$}{*}}]{a}{, }\item[{const void \texorpdfstring{$\ast$}{*}}]{b}{}\end{DoxyParamCaption})}
+
+
+
+comparator function for qsort to sort Rank\+Pairs descending. 
+
+\Hypertarget{simulator_8c_a06d00483eeb176645b89c6e4983e1560}\index{simulator.c@{simulator.c}!compute\_global\_spillover\_adj@{compute\_global\_spillover\_adj}}
+\index{compute\_global\_spillover\_adj@{compute\_global\_spillover\_adj}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{compute\_global\_spillover\_adj()}{compute\_global\_spillover\_adj()}}
+{\footnotesize\ttfamily \label{simulator_8c_a06d00483eeb176645b89c6e4983e1560} 
+void compute\+\_\+global\+\_\+spillover\+\_\+adj (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}} \texorpdfstring{$\ast$}{*}}]{g}{, }\item[{\mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}}]{nodes}{, }\item[{int}]{n}{}\end{DoxyParamCaption})}
+
+
+
+computes global spillover weights using adj list representation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & the adj graph. \\
+\hline
+{\em nodes} & the array of nodes to update. \\
+\hline
+{\em n} & num of nodes. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{simulator_8c_ad2748206dc22fbedf0bca0a5d5f0189c}\index{simulator.c@{simulator.c}!compute\_global\_spillover\_csr@{compute\_global\_spillover\_csr}}
+\index{compute\_global\_spillover\_csr@{compute\_global\_spillover\_csr}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{compute\_global\_spillover\_csr()}{compute\_global\_spillover\_csr()}}
+{\footnotesize\ttfamily \label{simulator_8c_ad2748206dc22fbedf0bca0a5d5f0189c} 
+void compute\+\_\+global\+\_\+spillover\+\_\+csr (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_c_s_r_graph}{CSRGraph}} \texorpdfstring{$\ast$}{*}}]{g}{, }\item[{\mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}}]{nodes}{, }\item[{int}]{n}{}\end{DoxyParamCaption})}
+
+
+
+computes global spillover weights using CSR representation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & the csr graph. \\
+\hline
+{\em nodes} & the array of nodes to update. \\
+\hline
+{\em n} & num of nodes. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{simulator_8c_a0c9ff6527315bd69975dd27c84ba0e21}\index{simulator.c@{simulator.c}!compute\_l2\_gap@{compute\_l2\_gap}}
+\index{compute\_l2\_gap@{compute\_l2\_gap}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{compute\_l2\_gap()}{compute\_l2\_gap()}}
+{\footnotesize\ttfamily \label{simulator_8c_a0c9ff6527315bd69975dd27c84ba0e21} 
+double compute\+\_\+l2\+\_\+gap (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}}]{nodes}{, }\item[{int}]{n}{}\end{DoxyParamCaption})}
+
+
+
+computes the l2/\+Euclidean dist of the gap. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nodes} & array of nodes. \\
+\hline
+{\em n} & num of nodes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the square root of the sum of squared gaps. 
+\end{DoxyReturn}
+\Hypertarget{simulator_8c_a914b5fd373e24081263b80cfcbf2d95c}\index{simulator.c@{simulator.c}!compute\_local\_spillover\_adj@{compute\_local\_spillover\_adj}}
+\index{compute\_local\_spillover\_adj@{compute\_local\_spillover\_adj}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{compute\_local\_spillover\_adj()}{compute\_local\_spillover\_adj()}}
+{\footnotesize\ttfamily \label{simulator_8c_a914b5fd373e24081263b80cfcbf2d95c} 
+void compute\+\_\+local\+\_\+spillover\+\_\+adj (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}} \texorpdfstring{$\ast$}{*}}]{g}{, }\item[{\mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}}]{nodes}{, }\item[{int}]{n}{}\end{DoxyParamCaption})}
+
+
+
+computes local spillover weights using adj list representation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & the adjacency graph. \\
+\hline
+{\em nodes} & the array of nodes to update. \\
+\hline
+{\em n} & num of nodes. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{simulator_8c_a3fb6fa2aaa30ceac5d1606bf4b560c06}\index{simulator.c@{simulator.c}!compute\_local\_spillover\_csr@{compute\_local\_spillover\_csr}}
+\index{compute\_local\_spillover\_csr@{compute\_local\_spillover\_csr}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{compute\_local\_spillover\_csr()}{compute\_local\_spillover\_csr()}}
+{\footnotesize\ttfamily \label{simulator_8c_a3fb6fa2aaa30ceac5d1606bf4b560c06} 
+void compute\+\_\+local\+\_\+spillover\+\_\+csr (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_c_s_r_graph}{CSRGraph}} \texorpdfstring{$\ast$}{*}}]{g}{, }\item[{\mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}}]{nodes}{, }\item[{int}]{n}{}\end{DoxyParamCaption})}
+
+
+
+computes local spillover weights using csr representation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & the csr graph. \\
+\hline
+{\em nodes} & the array of nodes to update. \\
+\hline
+{\em n} & num of nodes. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{simulator_8c_a43f4f56d16fdbc7979c7302941146fed}\index{simulator.c@{simulator.c}!create\_adj\_graph@{create\_adj\_graph}}
+\index{create\_adj\_graph@{create\_adj\_graph}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{create\_adj\_graph()}{create\_adj\_graph()}}
+{\footnotesize\ttfamily \label{simulator_8c_a43f4f56d16fdbc7979c7302941146fed} 
+\mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}} \texorpdfstring{$\ast$}{*} create\+\_\+adj\+\_\+graph (\begin{DoxyParamCaption}\item[{int32\+\_\+t}]{n\+\_\+nodes}{}\end{DoxyParamCaption})}
+
+
+
+creates an empty adjacency graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n\+\_\+nodes} & number of nodes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+pointer to the new \doxylink{struct_adj_graph}{Adj\+Graph}. 
+\end{DoxyReturn}
+\Hypertarget{simulator_8c_aa70c9c09bfa621a5b1ee83646863926b}\index{simulator.c@{simulator.c}!free\_adj@{free\_adj}}
+\index{free\_adj@{free\_adj}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{free\_adj()}{free\_adj()}}
+{\footnotesize\ttfamily \label{simulator_8c_aa70c9c09bfa621a5b1ee83646863926b} 
+void free\+\_\+adj (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}} \texorpdfstring{$\ast$}{*}}]{g}{}\end{DoxyParamCaption})}
+
+
+
+frees all memory associated with an adjacency graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & pointer to the graph. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{simulator_8c_a174cfadc79131fa77350ebf482d55c2c}\index{simulator.c@{simulator.c}!free\_csr@{free\_csr}}
+\index{free\_csr@{free\_csr}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{free\_csr()}{free\_csr()}}
+{\footnotesize\ttfamily \label{simulator_8c_a174cfadc79131fa77350ebf482d55c2c} 
+void free\+\_\+csr (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_c_s_r_graph}{CSRGraph}} \texorpdfstring{$\ast$}{*}}]{g}{}\end{DoxyParamCaption})}
+
+
+
+frees all memory associated with a csr graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & pointer to the graph. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{simulator_8c_a000cdbdcfcabd52b511326567b7b5ea4}\index{simulator.c@{simulator.c}!heap\_create@{heap\_create}}
+\index{heap\_create@{heap\_create}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{heap\_create()}{heap\_create()}}
+{\footnotesize\ttfamily \label{simulator_8c_a000cdbdcfcabd52b511326567b7b5ea4} 
+\mbox{\hyperlink{struct_min_heap}{Min\+Heap}} \texorpdfstring{$\ast$}{*} heap\+\_\+create (\begin{DoxyParamCaption}\item[{int32\+\_\+t}]{capacity}{}\end{DoxyParamCaption})}
+
+
+
+allocates and initializes a new \doxylink{struct_min_heap}{Min\+Heap}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em capacity} & The maximum number of elements the heap can hold. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+pointer to the created \doxylink{struct_min_heap}{Min\+Heap}. 
+\end{DoxyReturn}
+\Hypertarget{simulator_8c_a813be87557045c82c0fa5d4e5d66d78c}\index{simulator.c@{simulator.c}!heap\_free@{heap\_free}}
+\index{heap\_free@{heap\_free}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{heap\_free()}{heap\_free()}}
+{\footnotesize\ttfamily \label{simulator_8c_a813be87557045c82c0fa5d4e5d66d78c} 
+void heap\+\_\+free (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_min_heap}{Min\+Heap}} \texorpdfstring{$\ast$}{*}}]{h}{}\end{DoxyParamCaption})}
+
+
+
+frees the memory associated with a \doxylink{struct_min_heap}{Min\+Heap}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & pointer to the heap to free. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{simulator_8c_a76a1d87fe6be28e3ce053ff908b5f8ec}\index{simulator.c@{simulator.c}!heap\_pop@{heap\_pop}}
+\index{heap\_pop@{heap\_pop}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{heap\_pop()}{heap\_pop()}}
+{\footnotesize\ttfamily \label{simulator_8c_a76a1d87fe6be28e3ce053ff908b5f8ec} 
+\mbox{\hyperlink{struct_heap_node}{Heap\+Node}} heap\+\_\+pop (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_min_heap}{Min\+Heap}} \texorpdfstring{$\ast$}{*}}]{h}{}\end{DoxyParamCaption})}
+
+
+
+pops the node with the smallest distance from the heap. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & pointer to the heap. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the \doxylink{struct_heap_node}{Heap\+Node} with the minimum distance. 
+\end{DoxyReturn}
+\Hypertarget{simulator_8c_a7cc60c4b81f75250b6a7276afc7889b1}\index{simulator.c@{simulator.c}!heap\_push@{heap\_push}}
+\index{heap\_push@{heap\_push}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{heap\_push()}{heap\_push()}}
+{\footnotesize\ttfamily \label{simulator_8c_a7cc60c4b81f75250b6a7276afc7889b1} 
+void heap\+\_\+push (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_min_heap}{Min\+Heap}} \texorpdfstring{$\ast$}{*}}]{h}{, }\item[{int32\+\_\+t}]{node}{, }\item[{double}]{dist}{}\end{DoxyParamCaption})}
+
+
+
+pushes a new node into the min-\/heap. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em h} & pointer to the heap. \\
+\hline
+{\em node} & the node identifier. \\
+\hline
+{\em dist} & the priority/distance value. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{simulator_8c_afcae6cd3d04616a1cee4d21b6138d7a6}\index{simulator.c@{simulator.c}!load\_graphs@{load\_graphs}}
+\index{load\_graphs@{load\_graphs}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{load\_graphs()}{load\_graphs()}}
+{\footnotesize\ttfamily \label{simulator_8c_afcae6cd3d04616a1cee4d21b6138d7a6} 
+int load\+\_\+graphs (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{path}{, }\item[{int}]{n\+\_\+nodes}{, }\item[{\mbox{\hyperlink{struct_c_s_r_graph}{CSRGraph}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{csr\+\_\+f}{, }\item[{\mbox{\hyperlink{struct_c_s_r_graph}{CSRGraph}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{csr\+\_\+b}{, }\item[{\mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{adj\+\_\+f}{, }\item[{\mbox{\hyperlink{struct_adj_graph}{Adj\+Graph}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{adj\+\_\+b}{}\end{DoxyParamCaption})}
+
+
+
+loads graph data and builds both csr and adjacency list representations. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+ & {\em path} & path to the edges csv file. \\
+\hline
+ & {\em n\+\_\+nodes} & total num of nodes. \\
+\hline
+\mbox{\texttt{out}}  & {\em csr\+\_\+f} & pointer to forward csv graph. \\
+\hline
+\mbox{\texttt{out}}  & {\em csr\+\_\+b} & pointer to backward csv graph. \\
+\hline
+\mbox{\texttt{out}}  & {\em adj\+\_\+f} & pointer to forward adjacency graph. \\
+\hline
+\mbox{\texttt{out}}  & {\em adj\+\_\+b} & pointer to backward adjacency graph. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 on failure. 
+\end{DoxyReturn}
+\Hypertarget{simulator_8c_a0649188502091997d2db89528a607fdb}\index{simulator.c@{simulator.c}!load\_nodes@{load\_nodes}}
+\index{load\_nodes@{load\_nodes}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{load\_nodes()}{load\_nodes()}}
+{\footnotesize\ttfamily \label{simulator_8c_a0649188502091997d2db89528a607fdb} 
+int load\+\_\+nodes (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{path}{, }\item[{\mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{out\+\_\+nodes}{, }\item[{int \texorpdfstring{$\ast$}{*}}]{out\+\_\+n}{}\end{DoxyParamCaption})}
+
+
+
+loads node data from a csv file. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+ & {\em path} & path to the csv file. \\
+\hline
+\mbox{\texttt{out}}  & {\em out\+\_\+nodes} & pointer to the array of nodes. \\
+\hline
+\mbox{\texttt{out}}  & {\em out\+\_\+n} & pointer to the integer storing node count. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 on failure. 
+\end{DoxyReturn}
+\Hypertarget{simulator_8c_a3c04138a5bfe5d72780bb7e82a18e627}\index{simulator.c@{simulator.c}!main@{main}}
+\index{main@{main}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily \label{simulator_8c_a3c04138a5bfe5d72780bb7e82a18e627} 
+int main (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{argv}{}\end{DoxyParamCaption})}
+
+
+
+entry point of the simulation. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & argument count. \\
+\hline
+{\em argv} & argument vector. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, 1 on error. 
+\end{DoxyReturn}
+\Hypertarget{simulator_8c_aa0dc431641a3b42658e71e2e4614b204}\index{simulator.c@{simulator.c}!reset\_nodes@{reset\_nodes}}
+\index{reset\_nodes@{reset\_nodes}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{reset\_nodes()}{reset\_nodes()}}
+{\footnotesize\ttfamily \label{simulator_8c_aa0dc431641a3b42658e71e2e4614b204} 
+void reset\+\_\+nodes (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}}]{nodes}{, }\item[{int}]{n}{}\end{DoxyParamCaption})}
+
+
+
+resets node states for a new simulation run. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nodes} & array of nodes. \\
+\hline
+{\em n} & num of nodes. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{simulator_8c_a16238687200758ff6fe24abd2410d59d}\index{simulator.c@{simulator.c}!simulation\_iteration@{simulation\_iteration}}
+\index{simulation\_iteration@{simulation\_iteration}!simulator.c@{simulator.c}}
+\doxysubsubsection{\texorpdfstring{simulation\_iteration()}{simulation\_iteration()}}
+{\footnotesize\ttfamily \label{simulator_8c_a16238687200758ff6fe24abd2410d59d} 
+void simulation\+\_\+iteration (\begin{DoxyParamCaption}\item[{int}]{rep\+\_\+type}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{rep\+\_\+name}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{fac\+\_\+name}{, }\item[{const void \texorpdfstring{$\ast$}{*}}]{bwd\+\_\+graph}{, }\item[{\mbox{\hyperlink{struct_node}{Node}} \texorpdfstring{$\ast$}{*}}]{nodes}{, }\item[{int}]{n}{, }\item[{double}]{budget}{, }\item[{double}]{lambda}{, }\item[{double}]{gamma}{, }\item[{int}]{max\+\_\+iter}{, }\item[{double}]{epsilon}{, }\item[{int}]{output\+\_\+mode}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{output\+\_\+dir}{, }\item[{int}]{data\+\_\+val}{, }\item[{int}]{num\+\_\+candidates}{, }\item[{int}]{num\+\_\+snapshots}{, }\item[{int \texorpdfstring{$\ast$}{*}}]{out\+\_\+steps}{, }\item[{double \texorpdfstring{$\ast$}{*}}]{out\+\_\+l2}{}\end{DoxyParamCaption})}
+
+
+
+executes the simulation loop for budget allocation. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+ & {\em rep\+\_\+type} & the graph representation (0 for Adj\+List, 1 for CSR). \\
+\hline
+ & {\em rep\+\_\+name} & string name of representation for logging. \\
+\hline
+ & {\em fac\+\_\+name} & string name of the spillover factor strategy. \\
+\hline
+ & {\em bwd\+\_\+graph} & void pointer to the backward graph (cast based on rep\+\_\+type). \\
+\hline
+ & {\em nodes} & array of \doxylink{struct_node}{Node} structures containing state. \\
+\hline
+ & {\em n} & total number of nodes. \\
+\hline
+ & {\em budget} & total budget to distribute per iteration. \\
+\hline
+ & {\em lambda} & impact factor for spillover weights. \\
+\hline
+ & {\em gamma} & step size for indicator updates. \\
+\hline
+ & {\em max\+\_\+iter} & max num of iterations allowed. \\
+\hline
+ & {\em epsilon} & convergence threshold or tolerance for l2 gap. \\
+\hline
+ & {\em output\+\_\+mode} & if 1, writes detailed csv logs; if 0, runs silently. \\
+\hline
+ & {\em output\+\_\+dir} & directory path for output files. \\
+\hline
+ & {\em data\+\_\+val} & the dataset scale identifier. \\
+\hline
+ & {\em num\+\_\+candidates} & num of top candidates to track in logs. \\
+\hline
+ & {\em num\+\_\+snapshots} & num of snapshots to record in the log file. \\
+\hline
+\mbox{\texttt{out}}  & {\em out\+\_\+steps} & pointer to store the final iteration count. \\
+\hline
+\mbox{\texttt{out}}  & {\em out\+\_\+l2} & pointer to store the final l2 error. \\
+\hline
+\end{DoxyParams}
