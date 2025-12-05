@@ -22,8 +22,7 @@ jobs:
       run: gcc -O3 -fopenmp simulator.c -o simulator -lm
 
     - name: run Simulation
-      run: ./simulator 0.1 0.25 100 1000 0 "data/nodes.csv" "data/edges.csv" > actual_output.csv
-
+      run: OMP_NUM_THREADS=2 ./simulator 0.1 0.25 100 1000 0 "data/nodes.csv" "data/edges.csv" > actual_output.csv
     - name: validate results
       run: python test/ci_validate.py
       
